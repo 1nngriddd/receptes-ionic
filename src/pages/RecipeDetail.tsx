@@ -8,9 +8,11 @@ import {
   IonContent,
   IonButtons,
   IonBackButton,
-  IonImg
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent
 } from '@ionic/react';
-import Navbar from '../components/Navbar';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
 import InfoLine from '../components/InfoLine';
@@ -50,28 +52,31 @@ function RecipeDetail() {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="primary">
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" text="Tornar" />
+            <IonBackButton defaultHref="/home" />
           </IonButtons>
-          <IonTitle>Recepta</IonTitle>
-          <Navbar />
+          <IonTitle>Detall</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="ion-padding">
         {loading && <Loading />}
         {error && <ErrorMessage message={error} />}
         {!loading && !error && meal && (
-          <>
-            <h1>{meal.strMeal}</h1>
-            <IonImg src={meal.strMealThumb} alt={meal.strMeal} />
-            <InfoLine label="Origen" value={meal.strArea} />
-            <InfoLine label="Categoria" value={meal.strCategory} />
-            <h2>Ingredients</h2>
-            <IngredientList meal={meal} />
-            <h2>Instruccions</h2>
-            <p>{meal.strInstructions}</p>
-          </>
+          <IonCard>
+            <img src={meal.strMealThumb} alt={meal.strMeal} />
+            <IonCardHeader>
+              <IonCardTitle>{meal.strMeal}</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
+              <InfoLine label="Origen" value={meal.strArea} />
+              <InfoLine label="Categoria" value={meal.strCategory} />
+              <h2>Ingredients</h2>
+              <IngredientList meal={meal} />
+              <h2>Instruccions</h2>
+              <p>{meal.strInstructions}</p>
+            </IonCardContent>
+          </IonCard>
         )}
       </IonContent>
     </IonPage>

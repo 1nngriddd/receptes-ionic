@@ -1,11 +1,5 @@
-import { IonText } from '@ionic/react';
-
 function Loading() {
-  return (
-    <IonText>
-      <p>Carregant receptes...</p>
-    </IonText>
-  );
+  return <p>Carregant receptes...</p>;
 }
 
 export default Loading;

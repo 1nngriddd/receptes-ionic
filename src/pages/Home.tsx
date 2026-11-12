@@ -4,7 +4,10 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
-  IonContent
+  IonContent,
+  IonSearchbar,
+  IonSelect,
+  IonSelectOption
 } from '@ionic/react';
 import Navbar from '../components/Navbar';
 import Loading from '../components/Loading';
@@ -16,6 +19,9 @@ function Home() {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('All');
 
   useEffect(() => {
     async function getMeals() {
@@ -38,18 +44,53 @@ function Home() {
     getMeals();
   }, []);
 
+  const filteredMeals = meals.filter(meal => {
+    const matchSearch = meal.strMeal
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchCategory =
+      category === 'All' || meal.strCategory === category;
+
+    return matchSearch && matchCategory;
+  });
+
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>Llistat de Receptes</IonTitle>
+        <IonToolbar color="primary">
+          <IonTitle>Receptes</IonTitle>
           <Navbar />
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="ion-padding">
+        <IonSearchbar
+          value={search}
+          placeholder="Cerca una recepta..."
+          onIonInput={e => setSearch(e.detail.value ?? '')}
+        />
+
+        <IonSelect
+          label="Categoria"
+          labelPlacement="stacked"
+          value={category}
+          onIonChange={e => setCategory(e.detail.value)}
+        >
+          <IonSelectOption value="All">Totes</IonSelectOption>
+          <IonSelectOption value="Chicken">Chicken</IonSelectOption>
+          <IonSelectOption value="Side">Side</IonSelectOption>
+          <IonSelectOption value="Starter">Starter</IonSelectOption>
+          <IonSelectOption value="Miscellaneous">Miscellaneous</IonSelectOption>
+        </IonSelect>
+
         {loading && <Loading />}
         {error && <ErrorMessage message={error} />}
-        {!loading && !error && <MealList meals={meals} />}
+        {!loading && !error && (
+          <>
+            <h2>Resultats: {filteredMeals.length}</h2>
+            <MealList meals={filteredMeals} />
+          </>
+        )}
       </IonContent>
     </IonPage>
   );

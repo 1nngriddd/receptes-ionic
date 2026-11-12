@@ -1,4 +1,3 @@
-import { IonList, IonItem, IonLabel } from '@ionic/react';
 import type { Meal } from '../types/Meal';
 
 interface Props {
@@ -17,13 +16,11 @@ function IngredientList({ meal }: Props) {
   }
 
   return (
-    <IonList>
+    <ul>
       {ingredients.map(item => (
-        <IonItem key={item}>
-          <IonLabel>{item}</IonLabel>
-        </IonItem>
+        <li key={item}>{item}</li>
       ))}
-    </IonList>
+    </ul>
   );
 }
 
